@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Welcome to Our Library</h2>
+
+<h3>Your Borrowed Books</h3>
+
+<div class="row">
+    {% for borrowing in borrowed_books %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <img src="{{ borrowing.book.image_url }}" class="card-img-top" alt="{{ borrowing.book.title }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ borrowing.book.title }}</h5>
+                <p class="card-text">Author: {{ borrowing.book.author }}</p>
+                <p class="card-text">ISBN: {{ borrowing.book.isbn }}</p>
+                <p class="card-text">Publication Date: {{ borrowing.book.publication_date }}</p>
+                <p class="card-text">Genre: {{ borrowing.book.genre }}</p>
+                <p class="card-text">Availability: {{ borrowing.book.availability }}</p>
+            </div>
+            <div class="card-footer">
+                <form method="post" action="{% url 'return_book' borrowing.book.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Return</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

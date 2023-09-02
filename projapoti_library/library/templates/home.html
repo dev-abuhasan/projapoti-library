@@ -22,6 +22,16 @@
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary">Add to Wishlist</button>
                     </form>
+                    <form method="post" action="{% url 'borrow_book' book.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Read Book</button>
+                    </form>
+                </div>
+                {% else %}
+                <div class="card-footer">
+                    <a class="" href="{% url 'login' %}">
+                        <button>Add To WishList</button>
+                    </a>
                 </div>
                 {% endif %}
             </div>

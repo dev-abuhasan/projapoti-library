@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, Book, Wishlist
+from .models import CustomUser, Book, Wishlist, Borrowing, Review
 
 
 class CustomUserAdmin(UserAdmin):
@@ -21,7 +21,17 @@ class WishlistAdmin(admin.ModelAdmin):
     list_display = ('id', 'user')
 
 
+class BorrowingAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'borrow_date', 'return_date', 'book')
+
+
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'comment', 'rating', 'book')
+
+
 # Register your models here.
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Book, BookAdmin)
 admin.site.register(Wishlist, WishlistAdmin)
+admin.site.register(Borrowing, BorrowingAdmin)
+admin.site.register(Review, ReviewAdmin)

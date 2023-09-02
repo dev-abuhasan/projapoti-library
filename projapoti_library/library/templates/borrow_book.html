@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Book Borrowed Successfully!</h4>
+        <p>You have successfully borrowed the following book:</p>
+        <ul>
+            <li>Title: {{ borrowed_book.title }}</li>
+            <li>Author: {{ borrowed_book.author }}</li>
+            <li>ISBN: {{ borrowed_book.isbn }}</li>
+            <li>Publication Date: {{ borrowed_book.publication_date }}</li>
+            <li>Genre: {{ borrowed_book.genre }}</li>
+        </ul>
+        <hr>
+        <p class="mb-0">Enjoy reading! You can find more books on the <a href="{% url 'home' %}">home page</a>.</p>
+    </div>
+</div>
+{% endblock %}

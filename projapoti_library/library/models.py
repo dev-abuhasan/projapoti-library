@@ -3,8 +3,10 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import User
 from django.conf import settings
 
+
 class CustomUser(AbstractUser):
     pass
+
 
 class Book(models.Model):
     title = models.CharField(max_length=255)
@@ -18,19 +20,31 @@ class Book(models.Model):
     )
 
 
-
-
 class Borrowing(models.Model):
     # user = models.ForeignKey(User, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     borrow_date = models.DateField()
     return_date = models.DateField(null=True, blank=True)
 
 
-class Wishlist(models.Model):
-    # user = models.ForeignKey(User, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+class Review(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    rating = models.PositiveIntegerField()
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'book')
+
+
+class Wishlist(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+
     def __str__(self):
         return f'{self.user.username} - {self.book.title}'
