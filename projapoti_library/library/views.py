@@ -8,6 +8,7 @@ from django.utils import timezone
 from .forms import RegistrationForm, BorrowingForm, ReturningReviewForm
 from .models import Book, Borrowing, Review, Wishlist
 from .serializers import BookSerializer
+from django.http import HttpResponse
 
 
 class BookViewSet(viewsets.ModelViewSet):
@@ -105,17 +106,19 @@ def borrow_book(request, book_id):
 
 
 @login_required
-def return_and_review(request, book_id):
-    book = get_object_or_404(Book, id=book_id)
-    user = request.user
-    borrowing = Borrowing.objects.get(
-        user=user, book=book, return_date__isnull=True)
+def return_and_review(request, borrowing_id):
+    borrowing = get_object_or_404(Borrowing, id=borrowing_id)
+
+    if borrowing.user != request.user:
+        return HttpResponse("You are not authorized to return and review this book.")
+
+    book = borrowing.book
 
     if request.method == 'POST':
         form = ReturningReviewForm(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
-            review.user = user
+            review.user = request.user
             review.book = book
             review.save()
             borrowing.return_date = timezone.now().date()
@@ -123,6 +126,8 @@ def return_and_review(request, book_id):
             book.availability += 1
             book.save()
             return redirect('dashboard')
+        else:
+            print('Not a valid form', form.errors)
     else:
         form = ReturningReviewForm()
 
@@ -133,7 +138,9 @@ def return_and_review(request, book_id):
 def user_borrowed_books(request):
     user = request.user
     borrowed_books = Borrowing.objects.filter(
-        user=user, return_date__isnull=True)
+        user=user)
+
+    print(borrowed_books)
     reviews = Review.objects.filter(user=user)
 
     return render(request, 'user_borrowed_books.html', {'borrowed_books': borrowed_books, 'reviews': reviews})

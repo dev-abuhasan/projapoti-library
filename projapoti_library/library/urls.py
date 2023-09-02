@@ -19,7 +19,7 @@ urlpatterns = [
          views.remove_from_wishlist, name='remove_from_wishlist'),
     # borrow
     path('borrow/<int:book_id>/', views.borrow_book, name='borrow_book'),
-    path('return_and_review/<int:book_id>/',
+    path('return_and_review/<int:borrowing_id>/',
          views.return_and_review, name='return_and_review'),
     path('user_borrowed_books/', views.user_borrowed_books,
          name='user_borrowed_books'),

@@ -19,10 +19,12 @@
                 <p class="card-text">Availability: {{ borrowing.book.availability }}</p>
             </div>
             <div class="card-footer">
-                <form method="post" action="{% url 'return_book' borrowing.book.id %}">
+                <form method="post" action="{% url 'return_and_review' borrowing.id %}">
                     {% csrf_token %}
                     <button type="submit">Return</button>
                 </form>
+                <!-- Add a debug statement to display borrowing.id -->
+                <p>Debug: borrowing.id = {{ borrowing.id }}</p>
             </div>
         </div>
     </div>

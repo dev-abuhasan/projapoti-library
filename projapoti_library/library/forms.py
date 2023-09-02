@@ -12,7 +12,7 @@ class RegistrationForm(UserCreationForm):
 class BorrowingForm(forms.ModelForm):
     class Meta:
         model = Borrowing
-        fields = ['book', 'return_date']
+        fields = ['return_date']
         book_id = forms.IntegerField(widget=forms.HiddenInput())
 
 

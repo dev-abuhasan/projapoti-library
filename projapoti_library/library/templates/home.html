@@ -26,7 +26,8 @@
                         {% csrf_token %}
                         <div class="form-group">
                             <label for="return_date">Return Date:</label>
-                            <input type="date" id="return_date" name="return_date" class="form-control">
+                            <input type="date" id="return_date" name="return_date" class="form-control"
+                                min="{{ today_date }}">
                         </div>
                         <input type="hidden" name="book_id" value="{{ book.id }}">
                         <button type="submit" class="btn btn-primary">Read Book</button>
