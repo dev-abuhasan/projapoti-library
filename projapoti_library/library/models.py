@@ -25,7 +25,7 @@ class Borrowing(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    borrow_date = models.DateField()
+    borrow_date = models.DateField(auto_now_add=True)
     return_date = models.DateField(null=True, blank=True)
 
 

@@ -57,7 +57,7 @@ class DashboardView(TemplateView):
 
         user_wishlist = Wishlist.objects.filter(
             user=user).select_related('book')
-        
+
         context['user_wishlist'] = user_wishlist
         return context
 
@@ -97,7 +97,10 @@ def borrow_book(request, book_id):
         else:
             print("Form is not valid:", form.errors)
     else:
-        form = BorrowingForm()
+        # If the request method is not POST, create a form with initial data
+        initial_data = {'book_id': book_id}
+        form = BorrowingForm(initial=initial_data)
+
     return render(request, 'borrow_book.html', {'form': form, 'book': book})
 
 
