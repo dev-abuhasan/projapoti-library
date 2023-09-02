@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Welcome to Your Dashboard</h2>
+<p>This is a restricted view only accessible to logged-in users.</p>
+<a href="{% url 'logout' %}">Logout</a>
+
+<h3>Your Wishlist</h3>
+<ul>
+    {% for wishlist_item in user_wishlist %}
+    <li>{{ wishlist_item.book.title }} by {{ wishlist_item.book.author }}</li>
+    {% endfor %}
+</ul>
+
+<div class="row">
+    {% for wishlist_item in user_wishlist %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <img src="{{ wishlist_item.book.image_url }}" class="card-img-top" alt="{{ book.title }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ wishlist_item.book.title }}</h5>
+                <p class="card-text">Author: {{ wishlist_item.book.author }}</p>
+                <p class="card-text">ISBN: {{ wishlist_item.book.isbn }}</p>
+                <p class="card-text">Publication Date: {{ wishlist_item.book.publication_date }}</p>
+                <p class="card-text">Genre: {{ wishlist_item.book.genre }}</p>
+                <p class="card-text">Availability: {{ wishlist_item.book.availability }}</p>
+            </div>
+            <div class="card-footer">
+                <form method="post" action="{% url 'remove_from_wishlist' wishlist_item.book.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Remove</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

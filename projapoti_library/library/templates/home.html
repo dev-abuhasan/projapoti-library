@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Welcome to Our Library</h2>
+    <div class="row">
+        {% for book in books %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{{ book.image_url }}" class="card-img-top" alt="{{ book.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text">Author: {{ book.author }}</p>
+                    <p class="card-text">ISBN: {{ book.isbn }}</p>
+                    <p class="card-text">Publication Date: {{ book.publication_date }}</p>
+                    <p class="card-text">Genre: {{ book.genre }}</p>
+                    <p class="card-text">Availability: {{ book.availability }}</p>
+                </div>
+                {% if user.is_authenticated %}
+                <div class="card-footer">
+                    <form method="post" action="{% url 'add_to_wishlist' book.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Add to Wishlist</button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
